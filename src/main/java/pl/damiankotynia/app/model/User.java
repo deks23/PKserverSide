@@ -55,4 +55,15 @@ public class User {
     public void setFriends(List<User> friends) {
         this.friends = friends;
     }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", passwordHash='" + passwordHash + '\'' +
+                ", positions=" + positions +
+                ", friends=" + friends +
+                '}';
+    }
 }
