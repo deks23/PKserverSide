@@ -10,10 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import pl.damiankotynia.app.exceptions.LoginFailedException;
-import pl.damiankotynia.app.exceptions.StringPreparingException;
-import pl.damiankotynia.app.exceptions.UserExistsException;
-import pl.damiankotynia.app.exceptions.UserNotFoundException;
+import pl.damiankotynia.app.exceptions.*;
 import pl.damiankotynia.app.model.User;
 import pl.damiankotynia.app.repository.UserRepository;
 import pl.damiankotynia.app.service.UserService;
@@ -23,6 +20,7 @@ import java.util.Map;
 
 
 @RestController
+@RequestMapping(value = "/user")
 public class UserController {
 
     @RequestMapping(value = "/test", method = RequestMethod.GET)
@@ -103,9 +101,11 @@ public class UserController {
     public ResponseEntity testJWT(@RequestParam String token){
         logger.info("Testing token ");
         Claims claims;
-        logger.info(userService.parseJWT(token).toString());
-
-
+        try {
+            logger.info(userService.parseJWT(token).toString());
+        } catch (ValidationFailedException e) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        }
 
 
         return ResponseEntity.status(HttpStatus.ACCEPTED).build();

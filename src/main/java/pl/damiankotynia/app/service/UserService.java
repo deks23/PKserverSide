@@ -1,9 +1,6 @@
 package pl.damiankotynia.app.service;
 
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.JwtBuilder;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +13,7 @@ import pl.damiankotynia.app.controller.UserController;
 import pl.damiankotynia.app.exceptions.LoginFailedException;
 import pl.damiankotynia.app.exceptions.UserExistsException;
 import pl.damiankotynia.app.exceptions.UserNotFoundException;
+import pl.damiankotynia.app.exceptions.ValidationFailedException;
 import pl.damiankotynia.app.model.User;
 import pl.damiankotynia.app.repository.UserRepository;
 
@@ -53,46 +51,43 @@ public class UserService {
         return createJWT(u1.getId(), u1.getName(), password, 1000000L);
     }
 
-    public Claims parseJWT(String jwt) {
-        Claims claims = Jwts.parser()
-                .setSigningKey(DatatypeConverter.parseBase64Binary(SECRET))
-                .parseClaimsJws(jwt).getBody();
+    public boolean isFriend(){
+        //TODO sprawdzanie czy użytkownicy są znajomymi
+        return false;
+    }
+
+    public Claims parseJWT(String jwt) throws ValidationFailedException{
+        Claims claims = null;
+        try{
+            claims = Jwts.parser()
+                    .setSigningKey(DatatypeConverter.parseBase64Binary(SECRET))
+                    .parseClaimsJws(jwt).getBody();
+        }catch (Exception e){
+            throw new ValidationFailedException();
+        }
         return claims;
     }
 
     private String createJWT(Long id, String issuer, String password, long ttlMillis)  throws LoginFailedException{
-
-
         User user = userRepository.findById(id).get();
         if(!bCryptPasswordEncoder.matches(password, user.getPasswordHash()))
             throw new LoginFailedException();
 
-        //The JWT signature algorithm we will be using to sign the token
         SignatureAlgorithm signatureAlgorithm = SignatureAlgorithm.HS256;
 
         long nowMillis = System.currentTimeMillis();
         Date now = new Date(nowMillis);
 
-        //We will sign our JWT with our ApiKey secret
         byte[] apiKeySecretBytes = DatatypeConverter.parseBase64Binary(SECRET);
         Key signingKey = new SecretKeySpec(apiKeySecretBytes, signatureAlgorithm.getJcaName());
 
-        //Let's set the JWT Claims
         JwtBuilder builder = Jwts.builder().setId(id.toString())
                 .setIssuedAt(now)
                 .setIssuer(issuer)
                 .signWith(signatureAlgorithm, signingKey);
-
-      /*
-        if (ttlMillis >= 0) {
-            long expMillis = nowMillis + ttlMillis;
-            Date exp = new Date(expMillis);
-            builder.setExpiration(exp);
-        }*/
-
-        //Builds the JWT and serializes it to a compact, URL-safe string
         return builder.compact();
     }
+
 
     @Autowired
     private BCryptPasswordEncoder bCryptPasswordEncoder;

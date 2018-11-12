@@ -11,7 +11,7 @@ public class User {
     private long id;
     private String name;
     private String passwordHash;
-    @OneToMany(cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<Position> positions;
     @OneToMany(cascade = CascadeType.ALL)
     private List<User> friends;
