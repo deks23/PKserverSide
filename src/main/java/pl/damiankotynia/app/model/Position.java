@@ -1,6 +1,8 @@
 package pl.damiankotynia.app.model;
 
 import javax.persistence.*;
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
 
 @Entity
 public class Position {
@@ -11,6 +13,7 @@ public class Position {
     private double longitude;
     @ManyToOne(cascade = CascadeType.ALL)
     private User user;
+    private Timestamp timestamp;
 
     public long getId() {
         return id;
@@ -44,6 +47,14 @@ public class Position {
         this.user = user;
     }
 
+    public Timestamp getTimestamp() {
+        return timestamp;
+    }
+
+    public void setTimestamp(Timestamp timestamp) {
+        this.timestamp = timestamp;
+    }
+
     @Override
     public String toString() {
         return "Position{" +
@@ -51,6 +62,7 @@ public class Position {
                 ", latitude=" + latitude +
                 ", longitude=" + longitude +
                 ", user=" + user +
+                ", timestamp=" + timestamp +
                 '}';
     }
 }

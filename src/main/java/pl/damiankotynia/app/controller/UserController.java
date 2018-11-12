@@ -18,6 +18,8 @@ import pl.damiankotynia.app.service.UserService;
 import java.util.HashMap;
 import java.util.Map;
 
+import static pl.damiankotynia.app.StringUtils.validateString;
+
 
 @RestController
 @RequestMapping(value = "/user")
@@ -111,16 +113,6 @@ public class UserController {
         return ResponseEntity.status(HttpStatus.ACCEPTED).build();
     }
 
-
-
-    private String validateString(String variable) throws StringPreparingException{
-        if(variable==null)
-            throw new StringPreparingException();
-        variable.replace("\\s", "");
-        if ("".equals(variable))
-            throw new StringPreparingException();
-        return variable;
-    }
 
     @Autowired
     private UserRepository userRepository;

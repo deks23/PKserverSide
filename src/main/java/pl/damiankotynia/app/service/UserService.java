@@ -51,8 +51,16 @@ public class UserService {
         return createJWT(u1.getId(), u1.getName(), password, 1000000L);
     }
 
-    public boolean isFriend(){
-        //TODO sprawdzanie czy użytkownicy są znajomymi
+    public boolean isFriend(Long id, String friendName){
+        Optional <User> userOptional = userRepository.findById(id);
+        if(userOptional.isPresent()){
+            User user = userOptional.get();
+            List<User> userFriends = user.getFriends();
+            for (User u : userFriends){
+                if(u.getName().equals(friendName))
+                    return true;
+            }
+        }
         return false;
     }
 
