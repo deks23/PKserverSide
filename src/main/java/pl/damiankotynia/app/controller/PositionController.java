@@ -34,6 +34,7 @@ public class PositionController {
             logger.error("Invalid request");
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
+        logger.info("Position saved");
         return  ResponseEntity.status(HttpStatus.ACCEPTED).build();
     }
 
