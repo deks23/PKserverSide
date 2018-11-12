@@ -20,6 +20,14 @@ import pl.damiankotynia.app.service.UserService;
 @RequestMapping(value = "/position")
 public class PositionController {
 
+    /**
+     *  wysylanie wlasnej pozycji do serwera
+     *
+     * @param token token otrzymany przy logowaniu, używany do walidacji, przechowywany po stronie klienta
+     * @param latitude  szerokosc geograficzna
+     * @param longitude dlugosc geograficzna
+     * @return  zwraca jedynie status requestu
+     */
     @RequestMapping(value = "send", method = RequestMethod.POST, params = {"token", "latitude", "longitude"})
     public ResponseEntity sendPosition(@RequestParam String token, @RequestParam String latitude, @RequestParam String longitude){
         logger.info("Send position");
@@ -38,6 +46,14 @@ public class PositionController {
         return  ResponseEntity.status(HttpStatus.ACCEPTED).build();
     }
 
+
+    /**
+     *  pobranie pozycji danego uzytkownika, uzytkownicy musza byc znajomymi inaczej dostaniemy status UNAUTHORIZED
+     *
+     * @param token token przechowywany po stronie klienta, używany do walidacji
+     * @param user  nick uzytkownika ktorego chcemy wyszukac
+     * @return jeszcze nic
+     */
     @RequestMapping(value = "get", method = RequestMethod.POST, params = {"token", "user"})
     public ResponseEntity getPosition(@RequestParam String token, @RequestParam String user){
         logger.info("Get position");

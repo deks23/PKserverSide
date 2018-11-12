@@ -25,6 +25,10 @@ import static pl.damiankotynia.app.StringUtils.validateString;
 @RequestMapping(value = "/user")
 public class UserController {
 
+    /**
+     * metoda testowa, do wywalenia
+     * @return
+     */
     @RequestMapping(value = "/test", method = RequestMethod.GET)
     String qwe (){
         logger.info("Connection with database");
@@ -37,6 +41,10 @@ public class UserController {
         return u1.toString();
     }
 
+    /**
+     * metoda testowa, do wywalenia
+     * @return
+     */
     @RequestMapping(value = "/testBaza", method = RequestMethod.GET)
     ResponseEntity qweBaza(){
         logger.info("Connection with database");
@@ -76,6 +84,13 @@ public class UserController {
     }
 
 
+    /**
+     *  logowanie uzytkownika
+     *
+     * @param login login
+     * @param password haslo
+     * @return zwraca token ktory nalezy przechowywac po stronie klienta i wysylac przy kazdym kolejnym requescie
+     */
 
     @RequestMapping(value = "/login", params = {"login", "password"}, method = RequestMethod.POST)
     public ResponseEntity login(@RequestParam String login, @RequestParam String password){
@@ -99,6 +114,10 @@ public class UserController {
         return ResponseEntity.ok(responseMap);
     }
 
+    /**
+     * metoda testujaca dzialanie tokena, do wywalenia
+     * @return
+     */
     @RequestMapping(value = "/testJWT", params = {"token"}, method = RequestMethod.POST)
     public ResponseEntity testJWT(@RequestParam String token){
         logger.info("Testing token ");
