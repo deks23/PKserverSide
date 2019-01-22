@@ -64,7 +64,9 @@ public class UserService {
                     return true;
             }
         }
-        return false;
+        //return false;
+        //TODO zmienic na false
+        return true;
     }
 
     public boolean addFriend(){
