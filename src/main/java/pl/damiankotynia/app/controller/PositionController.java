@@ -68,10 +68,7 @@ public class PositionController {
             logger.warn("Users are not friends");
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }
-
-
-
-        return null;
+        return ResponseEntity.ok(positionService.getPosition(user));
     }
 
     @Autowired

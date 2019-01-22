@@ -55,12 +55,30 @@ public class UserService {
         Optional <User> userOptional = userRepository.findById(id);
         if(userOptional.isPresent()){
             User user = userOptional.get();
+            if(user.getName().equals(friendName)){
+                return true;
+            }
             List<User> userFriends = user.getFriends();
             for (User u : userFriends){
                 if(u.getName().equals(friendName))
                     return true;
             }
         }
+        return false;
+    }
+
+    public boolean addFriend(){
+        //TODO
+        return false;
+    }
+
+    public boolean responseOnFriendRequest(){
+        //TODO
+        return false;
+    }
+
+    public boolean friendRequest(){
+        //TODO
         return false;
     }
 

@@ -5,7 +5,7 @@ import java.sql.Timestamp;
 import java.time.LocalDateTime;
 
 @Entity
-public class Position {
+public class Position implements Comparable{
     @Id
     @GeneratedValue
     private long id;
@@ -64,5 +64,18 @@ public class Position {
                 ", user=" + user +
                 ", timestamp=" + timestamp +
                 '}';
+    }
+
+    @Override
+    public int compareTo(Object o) {
+        if(o instanceof Position){
+            if(this.timestamp.before(((Position) o).getTimestamp())){
+                return -1;
+            } else if (this.timestamp.after(((Position) o).getTimestamp())){
+                return 1;
+            }else
+                return 0;
+        }
+        return -1;
     }
 }

@@ -3,6 +3,8 @@ package pl.damiankotynia.app.model;
 import javax.persistence.*;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
+
 @Entity
 @Table(name="users")
 public class User {
@@ -65,5 +67,21 @@ public class User {
                 ", positions=" + positions +
                 ", friends=" + friends +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        User user = (User) o;
+        return id == user.id &&
+                Objects.equals(name, user.name) &&
+                Objects.equals(passwordHash, user.passwordHash);
+    }
+
+    @Override
+    public int hashCode() {
+
+        return Objects.hash(id, name, passwordHash, positions, friends);
     }
 }

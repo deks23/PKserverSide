@@ -13,6 +13,9 @@ import pl.damiankotynia.app.repository.UserRepository;
 
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -32,9 +35,10 @@ public class PositionService {
         return false;
     }
 
-    public boolean getPosition(){
-
-        return false;
+    public Position getPosition(String nick){
+        List<Position> positionList = positionRepository.getByUser(nick);
+        Collections.sort(positionList, Comparator.reverseOrder());
+        return positionList.get(0);
     }
 
     @Autowired
